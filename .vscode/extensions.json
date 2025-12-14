@@ -3,6 +3,7 @@
 		"editorconfig.editorconfig",
 		"davidanson.vscode-markdownlint",
 		"yzhang.markdown-all-in-one",
-		"biomejs.biome"
+		"biomejs.biome",
+		"unional.vscode-sort-package-json"
 	]
 }

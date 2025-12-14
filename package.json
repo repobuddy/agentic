@@ -1,22 +1,22 @@
 {
-  "name": "agentic-repo",
-  "private": true,
-  "description": "",
-  "scripts": {
-    "prepare": "husky"
-  },
-  "author": {
-    "name": "Homa Wong",
-    "email": "homawong@gmail.com",
-    "url": "https://github.com/unional"
-  },
-  "license": "MIT",
-  "packageManager": "pnpm@10.25.0",
-  "devDependencies": {
+	"name": "agentic-repo",
+	"private": true,
+	"description": "",
+	"license": "MIT",
+	"author": {
+		"name": "Homa Wong",
+		"email": "homawong@gmail.com",
+		"url": "https://github.com/unional"
+	},
+	"scripts": {
+		"prepare": "husky"
+	},
+	"devDependencies": {
 		"@biomejs/biome": "2.3.8",
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
+		"@commitlint/cli": "^20.2.0",
+		"@commitlint/config-conventional": "^20.2.0",
 		"@repobuddy/biome": "2.2.0",
-    "husky": "^9.1.7"
-  }
+		"husky": "^9.1.7"
+	},
+	"packageManager": "pnpm@10.25.0"
 }
