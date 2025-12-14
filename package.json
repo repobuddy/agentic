@@ -1,0 +1,14 @@
+{
+  "name": "agentic-repo",
+  "private": true,
+  "description": "",
+  "scripts": {
+  },
+  "author": {
+    "name": "Homa Wong",
+    "email": "homawong@gmail.com",
+    "url": "https://github.com/unional"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.25.0"
+}
