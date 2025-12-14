@@ -1,3 +1,9 @@
 {
-	"ignores": [".changeset/*.md", "**/CHANGELOG.md", "**/LICENSE", "website"]
+	"ignores": [
+		".changeset/*.md",
+		".cursor/**",
+		"**/CHANGELOG.md",
+		"**/LICENSE",
+		"website"
+	]
 }

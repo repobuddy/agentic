@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+
+This file provided basic rules as well as serving as a common central reference for all cursor rules in the repository.
+
+## Common Rules
+
+- Commit message should follow the Conventional Commits specification.
