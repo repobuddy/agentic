@@ -1,0 +1,54 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Turborepo
+
+**Detection**: Check if `turbo` exists in `devDependencies` or if `turbo.json` exists
+
+## Upgrade Process
+
+1. Check current version: Look at `turbo` in `devDependencies` or `packageManager` field
+
+2. Check latest version: `pnpm view turbo version` (or `npm view`/`yarn info`)
+
+3. Update in root `package.json`:
+
+   ```bash
+   pnpm add -D -w turbo@latest
+   # or
+   npm install -D turbo@latest
+   # or
+   yarn add -D -W turbo@latest
+   ```
+
+4. Review `turbo.json` for deprecated options:
+
+   - Check Turborepo migration guide for breaking changes
+   - Review task definitions and pipeline configuration
+   - Check for schema changes in new versions
+
+5. Update lockfile: `pnpm install` (or `npm install`/`yarn install`)
+
+6. Run available verification scripts:
+
+   - If `build` exists: `pnpm build` (or `npm run build`/`yarn build`)
+   - If `test` exists: `pnpm test` (or `npm test`/`yarn test`)
+   - If `lint` exists: `pnpm lint` (or `npm run lint`/`yarn lint`)
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+7. Verify turbo commands work:
+
+   ```bash
+   pnpm turbo --version
+   pnpm turbo run build --dry-run
+   ```
+
+8. Commit: `git commit -m "chore: upgrade turbo to <version>"`
+
+## Notes
+
+- Turborepo upgrades may require `turbo.json` schema updates
+- Check migration guide for breaking changes
+- Verify all turbo tasks still work correctly
+- May need to update CI/CD pipelines if turbo commands changed

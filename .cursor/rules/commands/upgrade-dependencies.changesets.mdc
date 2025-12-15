@@ -1,0 +1,41 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Changesets
+
+**Detection**: Check if `@changesets/cli` exists in `devDependencies` or if `changeset`/`cs` script exists
+
+## Upgrade Process
+
+1. Check current version: `pnpm view @changesets/cli version` (or `npm view`/`yarn info`)
+
+2. Check latest version: `pnpm view @changesets/cli version` (or `npm view`/`yarn info`)
+
+3. Update in root `package.json`:
+
+   ```bash
+   pnpm add -D -w @changesets/cli@latest
+   # or
+   npm install -D @changesets/cli@latest
+   # or
+   yarn add -D -W @changesets/cli@latest
+   ```
+
+4. Update lockfile: `pnpm install` (or `npm install`/`yarn install`)
+
+5. Run available verification scripts (adapt based on what's available):
+
+   - If `test` exists: `pnpm test` (or `npm test`/`yarn test`)
+   - If `build` exists: `pnpm build` (or `npm run build`/`yarn build`)
+   - If `cs` or `changeset` exists: Verify changeset commands work
+
+6. Patch `@changesets/assemble-release-plan` by adding `if (depType === "peerDependencies") return false;` to the first line of the `shouldBumpMajor` function. This patch should be applied to the `dist/changeset-release-plan.cjs.js` and `dist/changeset-release-plan.esm.js`  files. Use `pnpm patch` to apply the patch.
+
+7. Commit: `git commit -m "chore: upgrade changesets to <version>"`
+
+## Notes
+
+- Check for breaking changes in changelog
+- Verify `changeset version` and `changeset publish` still work correctly
+- If using pnpm workspaces, use `-w` flag

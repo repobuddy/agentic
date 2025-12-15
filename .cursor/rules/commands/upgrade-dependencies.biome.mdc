@@ -1,0 +1,53 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Biome (Replacing ESLint and Prettier)
+
+**Detection**: Check if `@biomejs/biome` exists in `devDependencies` or if `biome.jsonc`/`biome.json` exists
+
+## Upgrade Process
+
+1. Check latest version: `pnpm view @biomejs/biome version` (or `npm view`/`yarn info`)
+
+2. Update in root `package.json`:
+
+   ```bash
+   pnpm add -D -w @biomejs/biome@latest
+   # or
+   npm install -D @biomejs/biome@latest
+   # or
+   yarn add -D -W @biomejs/biome@latest
+   ```
+
+3. Check for configuration changes:
+
+   - Review `biome.jsonc` or `biome.json` for deprecated options
+   - Check migration guide if major version upgrade
+
+4. Run biome check (if `check` script exists): `pnpm check` (or `npm run check`/`yarn check`)
+
+5. Fix any new issues (if `check:fix` script exists): `pnpm check:fix` (or `npm run check:fix`/`yarn check:fix`)
+
+6. Run available verification scripts:
+
+   - If `test` exists: `pnpm test`
+   - If `build` exists: `pnpm build`
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+7. Commit: `git commit -m "chore: upgrade biome to <version>"`
+
+## Cleanup Tasks
+
+(if not already done):
+
+- Remove any remaining `eslint` or `prettier` dependencies
+- Remove `.eslintrc*` files
+- Remove `.prettierrc*` files
+- Update scripts that reference eslint/prettier
+
+## Notes
+
+- Biome combines linting and formatting
+- Check for new rules or deprecated options
+- Verify CI/CD still uses biome correctly

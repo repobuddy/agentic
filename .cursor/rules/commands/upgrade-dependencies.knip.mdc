@@ -1,0 +1,50 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Knip (Replacing depcheck)
+
+**Detection**: Check if `knip` exists in `devDependencies` or if `knip.config.*` exists
+
+## Upgrade Process
+
+1. Check latest version: `pnpm view knip version` (or `npm view`/`yarn info`)
+
+2. Update in root `package.json`:
+
+   ```bash
+   pnpm add -D -w knip@latest
+   # or
+   npm install -D knip@latest
+   # or
+   yarn add -D -W knip@latest
+   ```
+
+3. Review `knip.config.*` for deprecated options
+
+4. Run knip (if `knip` script exists): `pnpm knip` (or `npm run knip`/`yarn knip`)
+
+5. Address any new unused dependencies found
+
+6. Run available verification scripts:
+
+   - If `test` exists: `pnpm test`
+   - If `build` exists: `pnpm build`
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+7. Commit: `git commit -m "chore: upgrade knip to <version>"`
+
+## Cleanup Tasks
+
+(if not already done):
+
+- Remove `depcheck` dependencies from all packages
+- Remove `.depcheckrc.yml` files
+- Update scripts that reference `depcheck` (e.g., `verify` scripts)
+- Remove `depcheck` from turbo.json tasks if present
+
+## Notes
+
+- Knip is more comprehensive than depcheck
+- May find additional unused dependencies
+- Check migration guide for configuration changes

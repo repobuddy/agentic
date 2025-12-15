@@ -1,0 +1,151 @@
+---
+alwaysApply: false
+---
+
+# Repository Dependency Upgrade Plan
+
+This plan outlines the systematic approach for upgrading repository dependencies, ensuring each upgrade is tested and committed separately before proceeding to the next.
+
+## Initial Analysis
+
+Before starting upgrades, analyze the repository to understand its structure and available scripts:
+
+1. **Read root `package.json`** to identify:
+   - Available scripts (e.g., `build`, `test`, `lint`, `check`, `verify`, `v`, `coverage`)
+   - Package manager (pnpm, npm, yarn)
+   - Workspace structure (monorepo or single package)
+   - Current dependency versions
+
+2. **Check for workspace configuration**:
+   - `pnpm-workspace.yaml` (for pnpm workspaces)
+   - `package.json` workspaces field
+   - `turbo.json` (for Turborepo)
+
+3. **Identify available scripts**:
+   - `build` or `build:*` - Build scripts
+   - `test` or `test:*` - Test scripts
+   - `lint` or `lint:*` - Linting scripts
+   - `check` or `check:*` - Code checking (biome, eslint, etc.)
+   - `verify` or `v` - Full verification scripts
+   - `coverage` or `coverage:*` - Coverage scripts
+   - `knip` - Unused dependency checking
+   - `cs` or `changeset` - Changeset commands
+
+4. **Note current versions** of dependencies to track upgrade progress
+
+## Principles
+
+1. **One dependency at a time**: Each dependency upgrade should be done separately
+2. **Test before commit**: All tests must pass before committing each upgrade
+3. **Commit after each upgrade**: Each successful upgrade should be committed before moving to the next
+4. **Incremental upgrades**: For major version upgrades (like Storybook), upgrade one version at a time
+5. **Use available scripts**: Adapt commands to use the scripts available in the repository
+
+## Dependencies to Upgrade
+
+Load the specific dependency upgrade rule when working on that dependency:
+
+- **Changesets**: See `upgrade-dependencies.changesets.mdc`
+- **pnpm**: See `upgrade-dependencies.pnpm.mdc`
+- **Turborepo**: See `upgrade-dependencies.turborepo.mdc`
+- **Biome**: See `upgrade-dependencies.biome.mdc`
+- **Knip**: See `upgrade-dependencies.knip.mdc`
+- **Vitest**: See `upgrade-dependencies.vitest.mdc`
+- **Playwright**: See `upgrade-dependencies.playwright.mdc`
+- **Storybook**: See `upgrade-dependencies.storybook.mdc`
+
+## General Upgrade Workflow
+
+For each dependency upgrade:
+
+1. **Analyze repository**: Understand structure, scripts, and current versions
+
+2. **Check current version**: Review current version in `package.json`, catalog, or lockfile
+
+3. **Research**: Check changelog, migration guides, and breaking changes
+
+4. **Create branch** (optional but recommended): `git checkout -b upgrade/<dependency>-<version>`
+
+5. **Update dependency**: Use appropriate command based on package manager:
+   - pnpm: `pnpm add -D -w <package>@latest`
+   - npm: `npm install -D <package>@latest`
+   - yarn: `yarn add -D -W <package>@latest`
+   - For catalog entries: Update `pnpm-workspace.yaml`
+
+6. **Update lockfile**: `pnpm install` (or `npm install`/`yarn install`)
+
+7. **Review changes**: Check what changed in lockfile and configs
+
+8. **Fix issues**: Address any deprecation warnings or breaking changes
+
+9. **Run available checks** (adapt based on what scripts exist):
+
+   - If `check` exists: `pnpm check` (or `npm run check`/`yarn check`)
+   - If `check:fix` exists: `pnpm check:fix` (or `npm run check:fix`/`yarn check:fix`)
+   - If `knip` exists: `pnpm knip` (or `npm run knip`/`yarn knip`)
+   - If `test` exists: `pnpm test` (or `npm test`/`yarn test`)
+   - If `build` exists: `pnpm build` (or `npm run build`/`yarn build`)
+   - If `coverage` exists: `pnpm coverage` (or `npm run coverage`/`yarn coverage`)
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v` (or `npm run verify`/`yarn verify`)
+
+10. **Commit**: `git commit -m "chore: upgrade <dependency> to <version>"`
+
+11. **Merge**: Merge branch and continue to next dependency
+
+## Script Detection Reference
+
+Common script patterns to look for:
+
+- **Build**: `build`, `build:*`, `build:prod`, `build:dev`
+- **Test**: `test`, `test:*`, `test:unit`, `test:integration`, `test:watch`
+- **Lint**: `lint`, `lint:*`, `lint:fix`
+- **Check**: `check`, `check:*`, `check:fix`, `check:types`
+- **Verify**: `verify`, `v`, `verify:*`
+- **Coverage**: `coverage`, `coverage:*`, `test:coverage`
+- **Format**: `format`, `format:*`, `format:check`, `format:write`
+- **Type check**: `typecheck`, `tsc`, `tsc:check`
+
+## Cleanup Checklist
+
+After completing all upgrades, verify:
+
+- [ ] No `jest` or `@types/jest` dependencies remain
+- [ ] No `eslint` or `prettier` dependencies remain (if using biome)
+- [ ] No `depcheck` dependencies remain (if using knip)
+- [ ] No `jsdom` dependencies remain (if using vitest browser mode)
+- [ ] All scripts updated to use new tools (biome instead of eslint, knip instead of depcheck)
+- [ ] All config files removed (`.eslintrc*`, `.prettierrc*`, `jest.config.*`, `.depcheckrc.yml`)
+- [ ] CI/CD pipelines updated if needed
+- [ ] Documentation updated if needed
+
+## Version Tracking
+
+Track upgrade progress for each dependency:
+
+- [ ] Changesets: Current `?` → Target: `latest`
+- [ ] pnpm: Current `?` → Target: `latest`
+- [ ] Turborepo: Current `?` → Target: `latest`
+- [ ] Biome: Current `?` → Target: `latest`
+- [ ] Knip: Current `?` → Target: `latest`
+- [ ] Vitest: Current `?` → Target: `latest`
+- [ ] Playwright: Current `?` → Target: `latest`
+- [ ] Storybook: Current `?` → Target: `latest` (one version at a time)
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Lockfile conflicts**: Run `pnpm install` (or `npm install`/`yarn install`) to regenerate lockfile
+2. **Peer dependency warnings**: May need to update related packages
+3. **Breaking changes**: Check migration guides and update code accordingly
+4. **Test failures**: Review test output and update tests for new APIs
+5. **Build failures**: Check for deprecated build options or APIs
+6. **Script not found**: Verify script exists in `package.json` before running
+
+### Getting Help
+
+- Check package changelogs and migration guides
+- Review GitHub issues for known problems
+- Test in isolation before full upgrade
+- Use git to revert if upgrade causes major issues
+- Check package manager documentation for workspace-specific commands

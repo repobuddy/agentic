@@ -1,0 +1,55 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Storybook
+
+**Detection**: Check if `storybook` exists in `devDependencies` or if `.storybook` directory exists
+
+## Upgrade Process
+
+(One version at a time):
+
+1. Check current version: Look at `storybook` in `devDependencies` for each project in the repository. You may need to check the root `pnpm-workspace.yaml` for the version of storybook in use.
+
+2. If the version of storybook is less than 9, you need to upgrade the storybook in each project separately within that folder. For 9 and above, you can upgrade the storybook in the root project.
+
+3. Use Storybook's upgrade command (recommended):
+
+   ```bash
+   pnpx storybook@<target-version> upgrade
+   # or
+   npx storybook@<target-version> upgrade
+   # or
+   yarn dlx storybook@<target-version> upgrade
+   ```
+
+   Example for 8 → 9:
+
+   ```bash
+   pnpx storybook@9 upgrade
+   ```
+
+4. Review changes made by the upgrade command
+
+5. Follow any manual migration steps provided by the upgrade command.
+
+6. Test storybook (if `sb` or `storybook` script exists): `pnpm sb` (or `npm run sb`/`yarn sb`)
+
+7. Build storybook (if `build:storybook` or similar exists): `pnpm build:storybook`
+
+8. Run available verification scripts:
+
+   - If `test` exists: `pnpm test`
+   - If `build` exists: `pnpm build`
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+9.  Commit: `git commit -m "chore: upgrade storybook to <version>"`
+
+## Important Notes
+
+- **Always upgrade one version at a time** (e.g., 7 -> 8 -> 9 -> 10)
+- Storybook upgrades can be complex, use their official upgrade command
+- Check Storybook migration guide for breaking changes
+- Verify all addons are compatible with new version
+- Test storybook builds in CI/CD

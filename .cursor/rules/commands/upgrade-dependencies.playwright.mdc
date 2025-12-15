@@ -1,0 +1,58 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Vitest Browser Mode with Playwright (Replacing Jest with jsdom)
+
+**Detection**: Check if `@vitest/browser` and `@vitest/browser-playwright` exist, or if Vitest uses `jsdom` in its test environment.
+
+## Upgrade Process
+
+1. Upgrade vitest first (see `upgrade-dependencies.vitest.mdc`)
+
+2. Check latest playwright version: `pnpm view playwright version` (or `npm view`/`yarn info`)
+
+3. Update playwright in root `package.json`:
+
+   ```bash
+   pnpm add -D -w playwright@latest
+   # or
+   npm install -D playwright@latest
+   # or
+   yarn add -D -W playwright@latest
+   ```
+
+4. Update playwright browsers if needed:
+
+   ```bash
+   pnpm exec playwright install
+   # or
+   npx playwright install
+   # or
+   yarn playwright install
+   ```
+
+5. Review `vitest.config.*` files for browser configuration
+
+6. Run available verification scripts:
+
+   - If `test` exists: `pnpm test` (with browser mode enabled)
+   - If `coverage` exists: `pnpm coverage`
+   - If `build` exists: `pnpm build`
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+7. Commit: `git commit -m "chore: upgrade playwright to <version>"`
+
+## Cleanup Tasks
+
+(if not already done):
+
+- Remove `jsdom` dependencies (vitest browser mode replaces jsdom)
+- Update vitest configs to use browser mode instead of jsdom
+- Verify all tests that required jsdom now work with browser mode
+
+## Notes
+
+- Browser mode provides real browser testing vs jsdom's DOM simulation
+- Playwright must be compatible with vitest browser version
+- Check for breaking changes in playwright changelog

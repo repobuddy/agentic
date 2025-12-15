@@ -1,0 +1,46 @@
+---
+alwaysApply: false
+---
+
+# Upgrade pnpm
+
+**Detection**: Check `packageManager` field in `package.json` or presence of `pnpm-lock.yaml`
+
+## Upgrade Process
+
+1. Check current version: Look at `packageManager` field in `package.json` or `pnpm --version`
+
+2. Check latest version: `pnpm view pnpm version` or visit <https://pnpm.io/changelog>
+
+3. Update `packageManager` field in root `package.json`:
+
+   ```json
+   "packageManager": "pnpm@<latest-version>"
+   ```
+
+4. Install new pnpm version:
+
+   ```bash
+   corepack enable
+   corepack prepare pnpm@<latest-version> --activate
+   ```
+
+5. Clean install to verify:
+
+   ```bash
+   pnpm install
+   ```
+
+6. Run available verification scripts:
+
+   - If `test` exists: `pnpm test`
+   - If `build` exists: `pnpm build`
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+7. Commit: `git commit -m "chore: upgrade pnpm to <version>"`
+
+## Notes
+
+- pnpm uses corepack for version management
+- Check for breaking changes in pnpm changelog
+- Verify workspace resolution still works correctly

@@ -1,0 +1,64 @@
+---
+alwaysApply: false
+---
+
+# Upgrade Vitest (Replacing Jest)
+
+**Detection**: Check if `vitest` exists in `devDependencies` or catalog, or if `vitest.config.*` exists
+
+## Upgrade Process
+
+1. Check latest version: `pnpm view vitest version` (or `npm view`/`yarn info`)
+
+2. If using pnpm workspaces with catalog, update catalog in `pnpm-workspace.yaml`:
+
+   ```yaml
+   catalog:
+     'vitest': ^<latest-version>
+   ```
+
+   Update related vitest packages in catalog:
+
+   ```yaml
+   '@vitest/browser': ^<latest-version>
+   '@vitest/coverage-v8': ^<latest-version>
+   '@vitest/browser-playwright': ^<latest-version>
+   ```
+
+   Or update directly in `package.json`:
+
+   ```bash
+   pnpm add -D -w vitest@latest
+   ```
+
+3. Update lockfile: `pnpm install` (or `npm install`/`yarn install`)
+
+4. Review `vitest.config.*` files in each package for deprecated options
+
+5. Run available verification scripts:
+
+   - If `test` exists: `pnpm test`
+   - If `coverage` exists: `pnpm coverage`
+   - If `build` exists: `pnpm build`
+   - If `verify` or `v` exists: `pnpm verify` or `pnpm v`
+
+6. Commit: `git commit -m "chore: upgrade vitest to <version>"`
+
+## Cleanup Tasks
+
+(if not already done):
+
+- Remove `jest` dependencies from all packages
+- Remove `ts-jest` dependencies
+- Remove `@types/jest` dependencies
+- Remove `jsdom` dependencies if using browser mode
+- Remove `jest-image-snapshot` and `@types/jest-image-snapshot` (replace with vitest equivalents if needed)
+- Remove `jest.config.*` files
+- Update test files to use vitest APIs instead of jest
+- Remove jest from biome.jsonc globals if present
+
+## Notes
+
+- Vitest is API-compatible with Jest but may have differences
+- Check for breaking changes in vitest changelog
+- Verify browser mode and playwright integration still work
