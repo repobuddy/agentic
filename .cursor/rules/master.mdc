@@ -7,3 +7,4 @@ This file provided basic rules as well as serving as a common central reference 
 ## Common Rules
 
 - Commit message should follow the Conventional Commits specification.
+- Files and Folders should be named in kebab-case.
