@@ -1,0 +1,15 @@
+---
+description: Writing Storybook stories and tests
+alwaysApply: false
+---
+# Storybook Best Practices
+
+- Use kebab-case for files: `button.stories.tsx`, place next to source file
+- Use CSF Next syntax
+- Order properties in the following order: title, component, tags, parameters, argTypes, args, beforeEach, loaders, decorators, render, play, afterEach
+- Add play functions for validation
+
+## Story Composition
+- Each story should have a singular focus. Follow the Single Responsibility Principle.
+- Use `play` functions for interactions
+- Keep stories focused and lightweight
